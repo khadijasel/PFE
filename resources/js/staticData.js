@@ -1,6 +1,6 @@
 export const studentData = {
     student: {
-        name: "Alice Dupont",
+        name: "Madani Merwa",
         id: "ETU001",
         option: "Génie Logiciel"
     },
@@ -22,7 +22,7 @@ export const studentData = {
 
 export const teacherData = {
     teacher: {
-        name: "Dr. Martin Lefebvre",
+        name: "Mme AMRAOUI Asma",
         id: "ENS001",
         department: "Informatique"
     },
