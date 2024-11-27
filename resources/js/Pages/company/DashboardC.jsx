@@ -82,7 +82,7 @@ export default function CompanyDashboard() {
                                 </div>
                             ))}
                         </div>
-                        <button className="mt-6 w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200">
+                        <button className="mt-6 w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200" onClick={() => window.location.href = '/company/propose-pfe'}>
                             Proposer un nouveau PFE
                         </button>
                     </div>

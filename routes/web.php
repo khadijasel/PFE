@@ -9,6 +9,10 @@ Route::get('/profile', function () {
     return Inertia::render('Shared/Profile'); // Utilisez le bon chemin vers votre composant React
 })->name('profile');
 
+// Route::get('/company/propose-pfe', [PFEController::class, 'create'])->name('company.propose-pfe');
+// Route::post('/company/propose-pfe', [PFEController::class, 'store']);
+
+
 
 
 Route::get('/', function () {
@@ -27,6 +31,14 @@ Route::prefix('company')->group(function () {
 Route::get('/dashboard', function () {
     return Inertia::render('company/DashboardC');
 })->name('company.dashboard');
+
+Route::get('/propose-pfe', function () {
+    return Inertia::render('company/propose-pfe');
+})->name('company.propose-pfe');
+
+Route::get('/offers', function () {
+    return Inertia::render('company/offers');
+})->name('company.offers');
 });
 
 Route::prefix('teacher')->group(function () {
