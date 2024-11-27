@@ -8,7 +8,7 @@ export default function Layout({ children }) {
     const auth = {
         user: {
             name: 'John Doe',
-            role: 'admin' // Vous pouvez changer ce rôle pour 'teacher' ou 'student'
+            role: 'student' // Vous pouvez changer ce rôle pour 'teacher' ou 'student'
         }
     };
 
