@@ -3,24 +3,23 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Schema;
-
+use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
+    public function boot()
     {
-        //
-    }
-
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-        Schema::defaultStringLength(191); // Set the default string length
+        Inertia::share('auth', function () {
+            if (Auth::check()) {
+                return [
+                    'user' => [
+                        'nom' => Auth::user()->nom,
+                        'type_utilisateur' => Auth::user()->type_utilisateur,
+                    ],
+                ];
+            }
+            return null;
+        });
     }
 }

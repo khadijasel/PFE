@@ -2,45 +2,31 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Utilisateur extends Model
+class Utilisateur extends Authenticatable
 {
-    protected $fillable = ['type_utilisateur', 'nom', 'prenom', 'email', 'mot_de_passe'];
+    use Notifiable;
 
-    public function etudiant()
-    {
-        return $this->hasOne(Etudiant::class);
-    }
+    protected $table = 'utilisateurs';
+    
+    protected $fillable = [
+        'type_utilisateur',
+        'nom',
+        'prenom',
+        'email',
+        'mot_de_passe',
+    ];
 
-    public function enseignant()
-    {
-        return $this->hasOne(Enseignant::class);
-    }
+    protected $hidden = [
+        'mot_de_passe',
+        'remember_token',
+    ];
 
-    public function entreprise()
+    public function getAuthPassword()
     {
-        return $this->hasOne(Entreprise::class);
-    }
-
-    public function administration()
-    {
-        return $this->hasOne(Administration::class);
-    }
-
-    public function propositions()
-    {
-        return $this->hasMany(PropositionPFE::class);
-    }
-
-    public function choix()
-    {
-        return $this->hasMany(Choix::class);
-    }
-
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class);
+        return $this->mot_de_passe;
     }
 }
 
