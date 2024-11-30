@@ -1,22 +1,47 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AuthController;
 
+// Route::post('/send-password', [AuthController::class, 'sendPassword'])->name('send.password');
+
+
+// Route::get('/request-password', function () {
+//     return Inertia::render('EmailForm');
+// });
+
+
+// Route::post('/send-password', [AuthController::class, 'sendPassword']);
+Route::post('/login', [AuthController::class, 'login']);
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
 
 
 Route::get('/profile', function () {
     return Inertia::render('Shared/Profile'); // Utilisez le bon chemin vers votre composant React
 })->name('profile');
 
-// Route::get('/company/propose-pfe', [PFEController::class, 'create'])->name('company.propose-pfe');
-// Route::post('/company/propose-pfe', [PFEController::class, 'store']);
 
 
+
+
+
+Route::get('/login', function () {
+    return Inertia::render('auth/Login');
+});
 
 
 Route::get('/', function () {
-    return Inertia::render('auth/Login');
+    return Inertia::render('Welcome');
 });
+
+
 
 
 Route::prefix('admin')->group(function () {
@@ -61,3 +86,8 @@ Route::prefix('student')->group(function () {
     $username = 'samir';
     return view('users',compact('username'));
 });*/
+
+// Route::middleware(['auth'])->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+// });
