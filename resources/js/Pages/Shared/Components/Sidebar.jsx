@@ -32,7 +32,7 @@ export default function Sidebar({ userRole }) {
                 { name: 'Artificial Intelligence', href: '/admin/ArtificialIntelligenceDashboard' },
                 { name: 'Information System', href: '/admin/InformationSystemDashboard' },
             ]},
-            { name: 'Document', href: '/admin/DocumentManagement', icon: FaFileAlt },
+            { name: 'Gestion des propositions', href: '/admin/DocumentManagement', icon: FaFileAlt },
             { name: 'Companies', href: '/admin/Companies', icon: FaBuilding },
             { name: 'Defense scheduling', href: '/admin/DefenseSchedulingInterface', icon: FaClipboardCheck },
         ],
