@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('entreprises', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // FK vers users
-            $table->string('role'); // Super Admin, Gestionnaire, etc.
+            $table->foreignId('user_id')->constrained('utilisateurs')->onDelete('cascade'); // FK vers users
+            $table->string('denomation'); 
             $table->timestamps();
         });
     }

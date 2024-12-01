@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('etudiants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // FK vers users
+            $table->foreignId('user_id')->constrained('utilisateurs')->onDelete('cascade'); // FK vers users
             $table->string('option_master');
             $table->decimal('moyenne_master1', 5, 2);
             $table->foreignId('binome_id')->nullable()->constrained('etudiants')->onDelete('set null'); // Auto-référence

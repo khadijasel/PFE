@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('enseignants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); // FK vers users
-            $table->string('nom_entreprise');
+            $table->foreignId('user_id')->constrained('utilisateurs')->onDelete('cascade'); // FK vers users
+            $table->date('date_recrutement');
+            $table->string('grade');
+            $table->string('type');
             $table->timestamps();
         });
     }

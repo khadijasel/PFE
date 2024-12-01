@@ -31,11 +31,11 @@ class AuthController extends Controller
             switch ($user->type_utilisateur) {
                 case 'admin':
                     return redirect()->route('admin.dashboard');
-                case 'enseignant':
-                    return redirect()->route('teacher.dashboard');
+                case 'teacher':
+                    return redirect()->route('teacher.dashboard'); 
                 case 'etudiant':
-                    return redirect()->route('student.dashboard');
-                case 'company':
+                    return redirect()->route('etudiant.dashboard');
+                case 'entreprise':
                     return redirect()->route('company.dashboard');
                 default:
                     return redirect()->route('login')->with('error', 'Type d\'utilisateur non reconnu');

@@ -15,13 +15,13 @@ export default function Sidebar({ userRole }) {
             { name: 'Choisir un PFE', href: '/student/choose-pfe', icon: FaClipboardCheck },
             { name: 'Mon PFE', href: '/student/my-pfe', icon: FaClipboardCheck },
         ],
-        enseignant: [
+        teacher: [
             { name: 'Dashboard', href: '/teacher/dashboard', icon: FaHome },
             { name: 'Proposer des PFE', href: '/teacher/propose-pfe', icon: FaClipboardCheck },
             { name: 'Mes encadrements', href: '/teacher/supervisions', icon: FaClipboardCheck },
             { name: 'Jurys', href: '/teacher/juries', icon: FaClipboardCheck },
         ],
-        company: [
+        entreprise: [
             { name: 'Dashboard', href: '/company/dashboard', icon: FaHome },
             { name: 'Proposer des PFE', href: '/company/propose-pfe', icon: FaClipboardCheck },
             { name: 'Mes offres', href: '/company/offers', icon: FaClipboardCheck },
