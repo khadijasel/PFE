@@ -74,7 +74,7 @@ export default function AdminDashboard() {
                                 <div className="flex-grow">
                                     <h3 className="text-lg font-semibold mb-2">Gestion des formulaires</h3>
                                     <Link
-                                        href="/admin/form-management"
+                                        href="/admin/FormManagement"
                                         className="inline-block bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
                                     >
                                         Gérer les formulaires
@@ -86,7 +86,7 @@ export default function AdminDashboard() {
                                 <div className="flex-grow">
                                     <h3 className="text-lg font-semibold mb-2">Gestion des emails</h3>
                                     <Link
-                                        href="/admin/email-management"
+                                        href="/admin/EmailManagement"
                                         className="inline-block bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
                                     >
                                         Gérer les templates

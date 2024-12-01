@@ -6,7 +6,7 @@ export default function Header({ userName }) {
     return (
         <header className="bg-gray-800 shadow">
             <div className="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-                <h1 className="text-3xl font-bold text-white">Dashboard</h1>
+                <h1 className="text-3xl font-bold text-white">Dashboard </h1>
                 <div className="flex items-center">
                     <Link href="/profile" className="flex items-center mr-4">
                         <img

@@ -19,6 +19,53 @@ Route::prefix('admin')->group(function () {
  Route::get('/dashboard', function () { 
 return Inertia::render('Admin/DashboardA'); 
 })->name('admin.dashboard'); 
+
+Route::get('/dashboardMain', function () {
+    return Inertia::render('Admin/DashboardMain');  // Fichier DashboardMain.jsx
+})->name('admin.dashboard.main');
+
+    // Route pour Artificial Intelligence Dashboard
+    Route::get('/ArtificialIntelligenceDashboard', function () {
+        return Inertia::render('Admin/ArtificialIntelligenceDashboard');
+    })->name('admin.dashboard.ai');
+
+    // Route pour Information System Dashboard
+    Route::get('/InformationSystemDashboard', function () {
+        return Inertia::render('Admin/InformationSystemDashboard');
+    })->name('admin.dashboard.informationSystem');
+
+    // Route pour Network Dashboard
+    Route::get('/NetworkIssDashboard', function () {
+        return Inertia::render('Admin/NetworkIssDashboard');
+    })->name('admin.dashboard.network');
+
+    // Route pour Software Engineering Dashboard
+    Route::get('/SoftwareEngineeringDashboard', function () {
+        return Inertia::render('Admin/SoftwareEngineeringDashboard');
+    })->name('admin.dashboard.softwareEngineering');
+   
+    Route::get('/DocumentManagement',function(){
+        return Inertia::render('Admin/DocumentManagement');
+    })->name('admin.dashboard.document');
+    Route::get('/Companies',function(){
+        return Inertia::render('Admin/Companies');
+    })->name('admin.dashboard.Companies');
+
+    Route::get('/DefenseSchedulingInterface',function(){
+        return Inertia::render('Admin/DefenseSchedulingInterface');
+    })->name('admin.dashboard.Defense');
+
+  
+    Route::get('/FormManagement',function(){
+        return Inertia::render('Admin/FormManagement');
+    })->name('admin.dashboard.Form');
+
+    Route::get('/EmailManagement',function(){
+        return Inertia::render('Admin/EmailManagement');
+    })->name('admin.dashboard.Email');
+   
+
+
 });
 
 Route::prefix('company')->group(function () {

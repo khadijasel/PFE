@@ -1,9 +1,10 @@
-import React from 'react';
-import { Link, usePage } from '@inertiajs/react'; // Utiliser 'usePage' de '@inertiajs/react'
-import { FaHome, FaUserFriends, FaCog, FaClipboardCheck } from 'react-icons/fa';
+import React, { useState } from 'react';
+import { Link, usePage } from '@inertiajs/react';
+import { FaHome, FaUserFriends, FaCog, FaClipboardCheck, FaChevronDown, FaChevronUp ,FaFileAlt,FaBuilding} from 'react-icons/fa';
 
 export default function Sidebar({ userRole }) {
     const { url } = usePage();
+    const [showSpecialities, setShowSpecialities] = useState(false);
 
     const menuItems = {
         student: [
@@ -25,10 +26,20 @@ export default function Sidebar({ userRole }) {
         ],
         admin: [
             { name: 'Dashboard', href: '/admin/dashboard', icon: FaHome },
-            { name: 'Gestion des utilisateurs', href: '/admin/users', icon: FaUserFriends },
-            { name: 'Paramètres', href: '/admin/settings', icon: FaCog },
-            { name: 'Validation des PFE', href: '/admin/validate-pfe', icon: FaClipboardCheck },
+            { name: 'Speciality', href: '#', icon: FaUserFriends, subItems: [
+                { name: 'Software Engineering', href: '/admin/SoftwareEngineeringDashboard' },
+                { name: 'Network and ISS', href: '/admin/NetworkIssDashboard' },
+                { name: 'Artificial Intelligence', href: '/admin/ArtificialIntelligenceDashboard' },
+                { name: 'Information System', href: '/admin/InformationSystemDashboard' },
+            ]},
+            { name: 'Document', href: '/admin/DocumentManagement', icon: FaFileAlt },
+            { name: 'Companies', href: '/admin/Companies', icon: FaBuilding },
+            { name: 'Defense scheduling', href: '/admin/DefenseSchedulingInterface', icon: FaClipboardCheck },
         ],
+    };
+
+    const toggleSpecialities = () => {
+        setShowSpecialities(!showSpecialities);
     };
 
     return (
@@ -39,6 +50,39 @@ export default function Sidebar({ userRole }) {
             <nav className="space-y-4">
                 {menuItems[userRole].map((item) => {
                     const isActive = url === item.href;
+                    if (item.name === 'Speciality' && userRole === 'admin') {
+                        return (
+                            <div key={item.name}>
+                                <button
+                                    onClick={toggleSpecialities}
+                                    className={`flex items-center justify-between w-full py-3 px-4 rounded transition duration-200 ${
+                                        isActive ? 'bg-white text-gray-800' : 'hover:bg-gray-700 hover:text-white'
+                                    } text-lg`}
+                                >
+                                    <div className="flex items-center">
+                                        <item.icon className={`${isActive ? 'text-gray-800' : 'text-white'} mr-3`} />
+                                        {item.name}
+                                    </div>
+                                    {showSpecialities ? <FaChevronUp className="ml-2" /> : <FaChevronDown className="ml-2" />}
+                                </button>
+                                {showSpecialities && (
+                                    <div className="ml-6 mt-2 space-y-2">
+                                        {item.subItems.map((subItem) => (
+                                            <Link
+                                                key={subItem.name}
+                                                href={subItem.href}
+                                                className={`block py-2 px-4 rounded transition duration-200 ${
+                                                    url === subItem.href ? 'bg-white text-gray-800' : 'hover:bg-gray-700 hover:text-white'
+                                                } text-sm`}
+                                            >
+                                                {subItem.name}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    }
                     return (
                         <Link
                             key={item.name}
@@ -56,3 +100,4 @@ export default function Sidebar({ userRole }) {
         </div>
     );
 }
+
