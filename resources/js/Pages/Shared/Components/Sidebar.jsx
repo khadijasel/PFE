@@ -50,7 +50,7 @@ export default function Sidebar({ userRole }) {
             <nav className="space-y-4">
                 {menuItems[userRole].map((item) => {
                     const isActive = url === item.href;
-                    if (item.name === 'Speciality' && userRole === 'admin') {
+                    if (item.name === 'Speciality' && userRole === 'teacher') {
                         return (
                             <div key={item.name}>
                                 <button
