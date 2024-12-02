@@ -73,25 +73,25 @@ export default function TeacherDashboard() {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2">
                         <div className="grid grid-cols-2 gap-4 mb-6">
-                            <Link href="/teacher/pfe-ideas" className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                            <Link href="/teacher/PFYIdeas" className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                                 <div className="flex flex-col items-center text-center">
                                     <FaLightbulb className="text-4xl text-blue-500 mb-3" />
                                     <h3 className="font-semibold">Liste des idées PFE</h3>
                                 </div>
                             </Link>
-                            <Link href="/teacher/students" className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                            <Link href="/teacher/StudentsList" className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                                 <div className="flex flex-col items-center text-center">
                                     <FaUserGraduate className="text-4xl text-green-500 mb-3" />
                                     <h3 className="font-semibold">Liste des étudiants</h3>
                                 </div>
                             </Link>
-                            <Link href="/teacher/defense" className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                            <Link href="/teacher/Soutenance" className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                                 <div className="flex flex-col items-center text-center">
                                     <FaGraduationCap className="text-4xl text-yellow-500 mb-3" />
                                     <h3 className="font-semibold">Soutenance</h3>
                                 </div>
                             </Link>
-                            <Link href="/teacher/supervised-projects" className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+                            <Link href="/teacher/SupervisedProjects" className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow">
                                 <div className="flex flex-col items-center text-center">
                                     <FaProjectDiagram className="text-4xl text-purple-500 mb-3" />
                                     <h3 className="font-semibold">Projets supervisés</h3>

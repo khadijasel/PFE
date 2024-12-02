@@ -4,11 +4,16 @@ import Sidebar from './Components/Sidebar';
 import Header from './Components/Header';
 
 export default function Layout({ children }) {
-    // Utilisateurs statiques pour les tests
     const auth = {
         user: {
             name: 'John Doe',
+
             role: 'teacher' // Vous pouvez changer ce rôle pour 'teacher' ou 'student'
+            
+            
+            
+             // Vous pouvez changer ce rôle pour 'teacher' ou 'student'
+
         }
     };
 
