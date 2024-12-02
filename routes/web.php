@@ -55,14 +55,10 @@ Route::prefix('teacher')->group(function () {
 });
 
 
-Route::prefix('superior-teacher')->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('teacher/DashboardT');
-    })->name('superior-teacher.dashboard');
-
+Route::prefix('superiorTeacher')->group(function () {
     Route::get('/ValidateIdeas', function () {
-        return Inertia::render('superiorTeacher/ValidateIdeas'); 
-    })->name('superior-teacher.validateIdeas');
+        return Inertia::render('/superiorTeacher/ValidateIdeas'); 
+    })->name('superiorTeacher.ValidateIdeas');
 });
 
 

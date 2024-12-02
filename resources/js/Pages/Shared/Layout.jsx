@@ -4,7 +4,6 @@ import Sidebar from './Components/Sidebar';
 import Header from './Components/Header';
 
 export default function Layout({ children }) {
-    // Utilisateurs statiques pour les tests
     const auth = {
         user: {
             name: 'John Doe',
