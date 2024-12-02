@@ -49,6 +49,10 @@ Route::prefix('teacher')->group(function () {
         return Inertia::render('teacher/Soutenance'); 
     })->name('teacher.dashboard.Soutenance');
 
+    Route::get('/ValidateIdeas', function () {
+        return Inertia::render('teacher/ValidateIdeas'); 
+    })->name('teacher.dashboard.ValidateIdeas');
+
     Route::get('/ProposeThemeForm', function () {
         return Inertia::render('teacher/ProposeThemeForm'); 
     })->name('teacher.dashboard.ProposeThemeForm');
