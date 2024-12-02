@@ -5,6 +5,7 @@ import { FaHome, FaUserFriends, FaCog, FaClipboardCheck } from 'react-icons/fa';
 export default function Sidebar({ userRole }) {
     const { url } = usePage();
 
+    // Menu items definition
     const menuItems = {
         student: [
             { name: 'Dashboard', href: '/student/dashboard', icon: FaHome },
@@ -14,9 +15,9 @@ export default function Sidebar({ userRole }) {
         ],
         teacher: [
             { name: 'Dashboard', href: '/teacher/dashboard', icon: FaHome },
-            { name: 'Proposer des PFE', href: '/teacher/propose-pfe', icon: FaClipboardCheck },
-            { name: 'Mes encadrements', href: '/teacher/supervisions', icon: FaClipboardCheck },
-            { name: 'Jurys', href: '/teacher/juries', icon: FaClipboardCheck },
+            { name: 'Proposer des PFE', href: '/teacher/ProposeThemeForm', icon: FaClipboardCheck },
+            { name: 'Mes encadrements', href: '/teacher/SupervisedProjects', icon: FaClipboardCheck },
+            { name: 'Jurys', href: '/teacher/Juries', icon: FaClipboardCheck },
         ],
         company: [
             { name: 'Dashboard', href: '/company/dashboard', icon: FaHome },
@@ -30,6 +31,13 @@ export default function Sidebar({ userRole }) {
             { name: 'Validation des PFE', href: '/admin/validate-pfe', icon: FaClipboardCheck },
         ],
     };
+
+    if (userRole === 'superiorTeacher') {
+        menuItems['superiorTeacher'] = [
+            ...menuItems.teacher, 
+            { name: 'Validation des idées', href: '/superiorTeacher/ValidateIdeas', icon: FaClipboardCheck },
+        ];
+    }
 
     return (
         <div className="bg-gray-800 text-white w-48 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out">
