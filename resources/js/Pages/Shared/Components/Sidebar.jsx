@@ -34,7 +34,7 @@ export default function Sidebar({ userRole }) {
     if (userRole === 'superiorTeacher') {
         menuItems['superiorTeacher'] = [
             ...menuItems.teacher, 
-            { name: 'Validation des idées', href: '/superiorTeacher/ValidateIdeas', icon: FaClipboardCheck },
+            { name: 'Validation des idées', href: '/teacher/ValidateIdeas', icon: FaClipboardCheck },
         ];
     }
 
