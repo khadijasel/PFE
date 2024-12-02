@@ -1,4 +1,5 @@
 import React from 'react';
+import Layout from '../Shared/Layout';
 
 const StudentsList = () => {
     const students = [
@@ -23,6 +24,7 @@ const StudentsList = () => {
     ];
 
     return (
+        <Layout>
         <div className="p-6">
             <h1 className="text-xl font-bold mb-4">Students List</h1>
             <div className="mb-4">
@@ -41,7 +43,7 @@ const StudentsList = () => {
                         <th className="p-3 border border-gray-200">Moyenne</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="bg-gray-100">
                     {students.map((student, index) => (
                         <tr key={index} className="hover:bg-gray-50">
                             <td className="p-3 border border-gray-200">{student.name}</td>
@@ -54,6 +56,7 @@ const StudentsList = () => {
             </table>
            
         </div>
+        </Layout>
     );
 };
 

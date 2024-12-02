@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Layout from '../Shared/Layout';
 
 const Soutenance = () => {
     const [project, setProject] = useState(null);
@@ -15,7 +16,8 @@ const Soutenance = () => {
     };
 
     return (
-        <div className="p-6">
+        <Layout>
+        <div className="p-6 bg-gray-100">
             <h1 className="text-xl font-bold mb-4">Soutenance de Projet</h1>
             {project ? (
                 <div className="border p-4 rounded">
@@ -24,25 +26,13 @@ const Soutenance = () => {
                     <p>Date de début : {project.startDate}</p>
                     <p>Date de fin : {project.endDate}</p>
                     <p>Status : {status}</p>
-                    <div className="mt-4">
-                        <input
-                            type="date"
-                            value={defenseDate}
-                            onChange={(e) => setDefenseDate(e.target.value)}
-                            className="border p-2 rounded w-full"
-                        />
-                        <button
-                            onClick={handleValidationClick}
-                            className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
-                        >
-                            Valider la soutenance
-                        </button>
-                    </div>
+                    
                 </div>
             ) : (
                 <p>Aucun projet sélectionné pour la soutenance.</p>
             )}
         </div>
+        </Layout>
     );
 };
 

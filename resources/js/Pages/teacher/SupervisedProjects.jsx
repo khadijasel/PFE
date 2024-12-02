@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Layout from '../Shared/Layout';
 
 const SupervisedProjects = () => {
     const [projects, setProjects] = useState([
@@ -32,12 +33,13 @@ const SupervisedProjects = () => {
     };
 
     return (
+        <Layout>
         <div className="p-6">
             <h1 className="text-xl font-bold mb-4">Supervised Projects</h1>
             {/* Search input and table header */}
             <table className="w-full border border-gray-200 text-left">
                 <thead className="bg-gray-100">
-                    <tr>
+                    <tr >
                         <th className="p-3 border border-gray-200">Projet</th>
                         <th className="p-3 border border-gray-200">Étudiants</th>
                         <th className="p-3 border border-gray-200">Date Début</th>
@@ -45,7 +47,7 @@ const SupervisedProjects = () => {
                         <th className="p-3 border border-gray-200">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="bg-gray-100">
                     {projects.map((project, index) => (
                         <tr key={index} className="hover:bg-gray-50">
                             <td className="p-3 border border-gray-200">{project.projectName}</td>
@@ -67,6 +69,7 @@ const SupervisedProjects = () => {
                 </tbody>
             </table>
         </div>
+        </Layout>
     );
 };
 

@@ -15,7 +15,6 @@ export default function Sidebar({ userRole }) {
         ],
         teacher: [
             { name: 'Dashboard', href: '/teacher/dashboard', icon: FaHome },
-            { name: 'Proposer des PFE', href: '/teacher/ProposeThemeForm', icon: FaClipboardCheck },
             { name: 'Mes encadrements', href: '/teacher/SupervisedProjects', icon: FaClipboardCheck },
             { name: 'Jurys', href: '/teacher/Juries', icon: FaClipboardCheck },
         ],

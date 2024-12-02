@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Layout from '../Shared/Layout';
 
 const Juries = () => {
   // Données fictives représentant les soutenances
@@ -21,6 +22,7 @@ const Juries = () => {
   };
 
   return (
+    <Layout>
     <div style={{ padding: '30px', fontFamily: 'Arial, sans-serif', maxWidth: '600px', margin: 'auto' }}>
       <h2 style={{ color: '#003366', textAlign: 'center', marginBottom: '20px' }}>Choisir des Soutenances pour être Jury</h2>
       <ul style={{ listStyleType: 'none', padding: 0 }}>
@@ -61,6 +63,7 @@ const Juries = () => {
         </p>
       )}
     </div>
+    </Layout>
   );
 };
 

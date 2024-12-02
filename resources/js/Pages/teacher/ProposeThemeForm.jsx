@@ -1,12 +1,12 @@
 import React from 'react';
-
 const ProposeThemeForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log('Form submitted!');
     };
 
-    return (
+    return ( 
+        
         <div className="flex items-center mt-10">
             <form
                 onSubmit={handleSubmit}
@@ -48,6 +48,7 @@ const ProposeThemeForm = () => {
                 </button>
             </form>
         </div>
+        
     );
 };
 
