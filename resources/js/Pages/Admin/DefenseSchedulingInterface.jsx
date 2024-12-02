@@ -142,7 +142,7 @@ export default function PFEDefenseManagement() {
       </div>
 
       {/* New Defense Form */}
-      {/*showForm && (
+      {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
           <form onSubmit={handleFormSubmit} className="bg-white p-8 rounded-lg space-y-4">
             <h2 className="text-xl font-semibold">Schedule Defense</h2>
@@ -215,7 +215,7 @@ export default function PFEDefenseManagement() {
             </div>
           </form>
         </div>
-      )*\}
+      )}
 
       {/* Scheduled Defenses */}
       <div className="space-y-4">
