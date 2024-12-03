@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import Layout from '../Shared/Layout';
 export default function ValidateIdeas() {
     // Mock data for projects
     const [projects, setProjects] = useState([
@@ -70,6 +70,7 @@ export default function ValidateIdeas() {
     };
 
     return (
+        <Layout>
         <div className="p-6 bg-gray-100 min-h-screen">
             <h1 className="text-2xl font-bold mb-6 text-gray-800">Validation des Propositions de Projets</h1>
             {projects.length === 0 ? (
@@ -154,5 +155,6 @@ export default function ValidateIdeas() {
                 </div>
             )}
         </div>
+        </Layout>
     );
 }

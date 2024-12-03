@@ -71,7 +71,7 @@ Route::middleware(['auth', 'check.user.type:entreprise'])->prefix('company')->gr
     })->name('company.offers');
 });
 
-Route::middleware(['auth', 'check.user.type:teacher'])->prefix('teacher')->group(function () {
+Route::middleware(['auth', 'check.user.type:teacher,superiorTeacher'])->prefix('teacher')->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('teacher/DashboardT');
     })->name('teacher.dashboard');
@@ -101,6 +101,10 @@ Route::middleware(['auth', 'check.user.type:teacher'])->prefix('teacher')->group
     Route::get('/ProposeThemeForm', function () {
         return Inertia::render('teacher/ProposeThemeForm'); 
     })->name('teacher.dashboard.ProposeThemeForm');
+
+    Route::get('/ValidateIdeas', function () {
+        return Inertia::render('teacher/ValidateIdeas');
+    })->name('teacher.dashboard.ValidateIdeas');
 });
 
 Route::middleware(['auth', 'check.user.type:etudiant'])->prefix('student')->group(function () {
@@ -117,10 +121,9 @@ Route::middleware(['auth', 'check.user.type:etudiant'])->prefix('student')->grou
     Route::get('/propose-pfe', function () {
         return Inertia::render('etudiant/propose-pfe');
     })->name('student.propose-pfe');
-    Route::get('/propose-pfe', [PropositionController::class, 'create'])->name('student.propose-pfe');
-        Route::post('/propose-pfe', [PropositionController::class, 'store'])->name('student.propose-pfe.store');
-        Route::get('/propose-pfe/{id}', [PropositionController::class, 'edit'])->name('student.propose-pfe.edit');
-        Route::put('/propose-pfe/{id}', [PropositionController::class, 'update'])->name('student.propose-pfe.update');
+    Route::post('/propose-pfe', [PropositionController::class, 'store'])->name('student.propose-pfe.store');
+    Route::get('/propose-pfe/{id}', [PropositionController::class, 'edit'])->name('student.propose-pfe.edit');
+    Route::put('/propose-pfe/{id}', [PropositionController::class, 'update'])->name('student.propose-pfe.update');
 });
 
 Route::middleware(['auth'])->get('/profile', function () {
