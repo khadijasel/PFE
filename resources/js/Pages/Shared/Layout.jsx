@@ -8,11 +8,7 @@ export default function Layout({ children }) {
         user: {
             name: 'John Doe',
 
-            role: 'teacher' // Vous pouvez changer ce rôle pour 'teacher' ou 'student'
-            
-            
-            
-             // Vous pouvez changer ce rôle pour 'teacher' ou 'student'
+            role: 'superiorTeacher'
 
         }
     };
