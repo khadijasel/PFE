@@ -7,11 +7,13 @@ export default function Layout({ children }) {
     const auth = {
         user: {
             name: 'John Doe',
-            role: 'superiorTeacher'
+
+            role: 'teacher' // Vous pouvez changer ce rôle pour 'teacher' ou 'student'
             
             
             
              // Vous pouvez changer ce rôle pour 'teacher' ou 'student'
+
         }
     };
 
