@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class PropositionPFE extends Model
 {
+    protected $table = 'proposition_p_f_e_s';
 
     protected $fillable = [
         'user_id',
@@ -15,23 +16,17 @@ class PropositionPFE extends Model
         'besoins_materiel',
         'statut',
         'type_pfe',
+        'email'
     ];
 
-    public function auteur()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class);
     }
 
-    // Relation : Une proposition peut avoir plusieurs choix
-    public function choix()
+    public function invitation()
     {
-        return $this->hasMany(Choix::class);
-    }
-
-    // Relation : Une proposition peut avoir une soutenance
-    public function soutenance()
-    {
-        return $this->hasOne(Soutenance::class);
+        return $this->hasOne(Invitation::class, 'proposition_id');
     }
 }
 

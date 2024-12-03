@@ -12,9 +12,9 @@ class UtilisateurTableSeeder extends Seeder
     {
           Utilisateur::create([
             'type_utilisateur' => 'etudiant',
-            'nom' => 'khadija',
-            'prenom' => 'seladji',
-            'email' => 'seladjikhadija1@gmail.com',
+            'nom' => 'merwa',
+            'prenom' => 'madani',
+            'email' => 'madanimerwaamina@gmail.com',
             'mot_de_passe' => Hash::make('password'),
         ]);
     }

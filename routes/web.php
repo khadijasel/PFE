@@ -4,11 +4,57 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PropositionController;
 
 Route::middleware(['auth', 'check.user.type:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () { 
         return Inertia::render('Admin/DashboardA'); 
     })->name('admin.dashboard'); 
+    Route::get('/dashboardMain', function () {
+        return Inertia::render('Admin/DashboardMain');  // Fichier DashboardMain.jsx
+    })->name('admin.dashboard.main');
+    
+        // Route pour Artificial Intelligence Dashboard
+        Route::get('/ArtificialIntelligenceDashboard', function () {
+            return Inertia::render('Admin/ArtificialIntelligenceDashboard');
+        })->name('admin.dashboard.ai');
+    
+        // Route pour Information System Dashboard
+        Route::get('/InformationSystemDashboard', function () {
+            return Inertia::render('Admin/InformationSystemDashboard');
+        })->name('admin.dashboard.informationSystem');
+    
+        // Route pour Network Dashboard
+        Route::get('/NetworkIssDashboard', function () {
+            return Inertia::render('Admin/NetworkIssDashboard');
+        })->name('admin.dashboard.network');
+    
+        // Route pour Software Engineering Dashboard
+        Route::get('/SoftwareEngineeringDashboard', function () {
+            return Inertia::render('Admin/SoftwareEngineeringDashboard');
+        })->name('admin.dashboard.softwareEngineering');
+       
+        Route::get('/DocumentManagement',function(){
+            return Inertia::render('Admin/DocumentManagement');
+        })->name('admin.dashboard.document');
+        Route::get('/Companies',function(){
+            return Inertia::render('Admin/Companies');
+        })->name('admin.dashboard.Companies');
+    
+        Route::get('/DefenseSchedulingInterface',function(){
+            return Inertia::render('Admin/DefenseSchedulingInterface');
+        })->name('admin.dashboard.Defense');
+    
+      
+        Route::get('/FormManagement',function(){
+            return Inertia::render('Admin/FormManagement');
+        })->name('admin.dashboard.Form');
+    
+        Route::get('/EmailManagement',function(){
+            return Inertia::render('Admin/EmailManagement');
+        })->name('admin.dashboard.Email');
+       
+    
 });
 
 Route::middleware(['auth', 'check.user.type:entreprise'])->prefix('company')->group(function () {
@@ -32,9 +78,33 @@ Route::middleware(['auth', 'check.user.type:teacher'])->prefix('teacher')->group
     Route::get('/propose-pfe', function () {
         return Inertia::render('teacher/propose-pfe');
     })->name('teacher.propose-pfe');
+    Route::get('/PFYIdeas', function () {
+        return Inertia::render('teacher/PFYIdeas'); 
+    })->name('teacher.dashboard.PFYIdeas');
+
+    Route::get('/StudentsList', function () {
+        return Inertia::render('teacher/StudentsList'); 
+    })->name('teacher.dashboard.StudentsList');
+
+    Route::get('/SupervisedProjects', function () {
+        return Inertia::render('teacher/SupervisedProjects'); 
+    })->name('teacher.dashboard.SupervisedProjects');
+
+    Route::get('/Juries', function () {
+        return Inertia::render('teacher/Juries'); 
+    })->name('teacher.dashboard.Juries');
+
+    Route::get('/Soutenance', function () {
+        return Inertia::render('teacher/Soutenance'); 
+    })->name('teacher.dashboard.Soutenance');
+
+    Route::get('/ProposeThemeForm', function () {
+        return Inertia::render('teacher/ProposeThemeForm'); 
+    })->name('teacher.dashboard.ProposeThemeForm');
 });
 
 Route::middleware(['auth', 'check.user.type:etudiant'])->prefix('student')->group(function () {
+   
     Route::get('/dashboard', function () {
         return Inertia::render('etudiant/DashboardE');
     })->name('etudiant.dashboard');
@@ -47,6 +117,10 @@ Route::middleware(['auth', 'check.user.type:etudiant'])->prefix('student')->grou
     Route::get('/propose-pfe', function () {
         return Inertia::render('etudiant/propose-pfe');
     })->name('student.propose-pfe');
+    Route::get('/propose-pfe', [PropositionController::class, 'create'])->name('student.propose-pfe');
+        Route::post('/propose-pfe', [PropositionController::class, 'store'])->name('student.propose-pfe.store');
+        Route::get('/propose-pfe/{id}', [PropositionController::class, 'edit'])->name('student.propose-pfe.edit');
+        Route::put('/propose-pfe/{id}', [PropositionController::class, 'update'])->name('student.propose-pfe.update');
 });
 
 Route::middleware(['auth'])->get('/profile', function () {

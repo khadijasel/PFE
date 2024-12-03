@@ -1,137 +1,164 @@
-import React, { useState } from 'react';
-import { Head, useForm } from '@inertiajs/react';
+import React, { useEffect } from 'react';
+import { useForm, usePage } from '@inertiajs/react';
 import Layout from '../Shared/Layout';
 
-export default function ProposePFE() {
-    const { data, setData, post, processing, errors } = useForm({
-        student1Name: '',
-        student2Name: '',
-        option: 'GL',
-        title: '',
-        description: '',
+const ProposePFE = () => {
+    const { data, setData, put, post, processing, errors } = useForm({
+        titre: '',
+        resume: '',
         technologies: '',
-        hardwareNeeds: '',
-        isStartup: '',
+        besoins_materiel: '',
+        type_pfe: 'Classique',
+        email: '',
     });
+
+    const { props } = usePage();
+    const { proposition, success } = props;
+
+    // Remplir le formulaire avec les données existantes si elles sont disponibles
+    useEffect(() => {
+        if (proposition) {
+            setData({
+                titre: proposition.titre,
+                resume: proposition.resume,
+                technologies: proposition.technologies,
+                besoins_materiel: proposition.besoins_materiel,
+                type_pfe: proposition.type_pfe,
+                email: proposition.email || '',
+            });
+        }
+    }, [proposition]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setData(name, value);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post('/student/propose-pfe'); // Mettre à jour cette route si nécessaire
+        if (proposition) {
+            put(route('student.propose-pfe.update', proposition.id)); // PUT pour mise à jour
+        } else {
+            post(route('student.propose-pfe.store')); // POST pour ajout
+        }
     };
 
     return (
         <Layout>
-            <Head title="Proposer un PFE" />
-            <div className="max-w-3xl mx-auto bg-white shadow rounded-lg p-6">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-6">Proposer un PFE</h2>
-                <p className="text-sm text-gray-600 mb-4">Veuillez remplir le formulaire ci-dessous pour proposer un sujet de PFE. Si vous choisissez un binôme, il recevra une notification pour valider la collaboration.</p>
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label htmlFor="student1Name" className="block text-sm font-medium text-gray-700">Nom et prénom (Étudiant 1)</label>
+            <div className="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-8">
+                <h1 className="text-3xl font-semibold mb-6 text-gray-800">
+                    {proposition ? 'Modifier le sujet de PFE' : 'Proposer un sujet de PFE'}
+                </h1>
+
+                {/* Message de succès */}
+                {success && (
+                    <div className="mb-4 p-4 bg-green-500 text-white rounded-md">
+                        {success}
+                    </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                    {/* Champ Titre */}
+                    <div>
+                        <label htmlFor="titre" className="block text-sm font-medium text-gray-700">Titre</label>
                         <input
+                            id="titre"
                             type="text"
-                            id="student1Name"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            value={data.student1Name}
-                            onChange={e => setData('student1Name', e.target.value)}
+                            name="titre"
+                            value={data.titre}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
                         />
-                        {errors.student1Name && <div className="text-red-500 text-sm mt-1">{errors.student1Name}</div>}
+                        {errors.titre && <div className="text-red-500 text-sm mt-2">{errors.titre}</div>}
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="student2Name" className="block text-sm font-medium text-gray-700">Nom et prénom (Étudiant 2 - Binôme)</label>
-                        <input
-                            type="text"
-                            id="student2Name"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            value={data.student2Name}
-                            onChange={e => setData('student2Name', e.target.value)}
-                        />
-                        {errors.student2Name && <div className="text-red-500 text-sm mt-1">{errors.student2Name}</div>}
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="option" className="block text-sm font-medium text-gray-700">Option</label>
-                        <select
-                            id="option"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            value={data.option}
-                            onChange={e => setData('option', e.target.value)}
-                        >
-                            <option value="GL">GL</option>
-                            <option value="IA">IA</option>
-                            <option value="RSD">RSD</option>
-                            <option value="SIC">SIC</option>
-                        </select>
-                        {errors.option && <div className="text-red-500 text-sm mt-1">{errors.option}</div>}
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="title" className="block text-sm font-medium text-gray-700">Intitulé du PFE</label>
-                        <input
-                            type="text"
-                            id="title"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            value={data.title}
-                            onChange={e => setData('title', e.target.value)}
-                        />
-                        {errors.title && <div className="text-red-500 text-sm mt-1">{errors.title}</div>}
-                    </div>
-                    <div className="mb-4">
-                        <label htmlFor="description" className="block text-sm font-medium text-gray-700">Résumé</label>
+
+                    {/* Champ Résumé */}
+                    <div>
+                        <label htmlFor="resume" className="block text-sm font-medium text-gray-700">Résumé</label>
                         <textarea
-                            id="description"
-                            rows="4"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            value={data.description}
-                            onChange={e => setData('description', e.target.value)}
-                        ></textarea>
-                        {errors.description && <div className="text-red-500 text-sm mt-1">{errors.description}</div>}
+                            id="resume"
+                            name="resume"
+                            value={data.resume}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                        />
+                        {errors.resume && <div className="text-red-500 text-sm mt-2">{errors.resume}</div>}
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="technologies" className="block text-sm font-medium text-gray-700">Technologies utilisées</label>
+
+                    {/* Champ Technologies */}
+                    <div>
+                        <label htmlFor="technologies" className="block text-sm font-medium text-gray-700">Technologies</label>
                         <input
-                            type="text"
                             id="technologies"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                            type="text"
+                            name="technologies"
                             value={data.technologies}
-                            onChange={e => setData('technologies', e.target.value)}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
                         />
-                        {errors.technologies && <div className="text-red-500 text-sm mt-1">{errors.technologies}</div>}
+                        {errors.technologies && <div className="text-red-500 text-sm mt-2">{errors.technologies}</div>}
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="hardwareNeeds" className="block text-sm font-medium text-gray-700">Besoins matériels</label>
+
+                    {/* Champ Besoins Matériel */}
+                    <div>
+                        <label htmlFor="besoins_materiel" className="block text-sm font-medium text-gray-700">Besoins Matériel</label>
                         <textarea
-                            id="hardwareNeeds"
-                            rows="3"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            value={data.hardwareNeeds}
-                            onChange={e => setData('hardwareNeeds', e.target.value)}
-                        ></textarea>
-                        {errors.hardwareNeeds && <div className="text-red-500 text-sm mt-1">{errors.hardwareNeeds}</div>}
+                            id="besoins_materiel"
+                            name="besoins_materiel"
+                            value={data.besoins_materiel}
+                            onChange={handleChange}
+                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                        />
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="isStartup" className="block text-sm font-medium text-gray-700">Projet innovant (startup) ?</label>
+
+                    {/* Champ Type PFE */}
+                    <div>
+                        <label htmlFor="type_pfe" className="block text-sm font-medium text-gray-700">Type de PFE</label>
                         <select
-                            id="isStartup"
-                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                            value={data.isStartup}
-                            onChange={e => setData('isStartup', e.target.value)}
+                            id="type_pfe"
+                            name="type_pfe"
+                            value={data.type_pfe}
+                            onChange={handleChange}
+                            required
+                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
                         >
-                            <option value="">Sélectionnez</option>
-                            <option value="yes">Oui</option>
-                            <option value="no">Non</option>
+                            <option value="Classique">Classique</option>
+                            <option value="Innovant">Innovant</option>
+                            <option value="Recherche">Recherche</option>
                         </select>
-                        {errors.isStartup && <div className="text-red-500 text-sm mt-1">{errors.isStartup}</div>}
                     </div>
+
+                    {/* Champ Email */}
+                    <div>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                        <input
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={data.email}
+                            onChange={handleChange}
+                            className="mt-1 p-2 w-full border border-gray-300 rounded-md"
+                        />
+                        {errors.email && <div className="text-red-500 text-sm mt-2">{errors.email}</div>}
+                    </div>
+
+                    {/* Bouton Soumettre ou Mettre à jour */}
                     <div className="flex justify-end">
                         <button
                             type="submit"
-                            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition duration-200"
                             disabled={processing}
+                            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-6 rounded shadow focus:outline-none focus:ring focus:ring-blue-300"
                         >
-                            Soumettre la proposition
+                            {processing ? 'En cours...' : proposition ? 'Mettre à jour' : 'Soumettre'}
                         </button>
                     </div>
                 </form>
             </div>
         </Layout>
     );
-}
+};
+
+export default ProposePFE;
