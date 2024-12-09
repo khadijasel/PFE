@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('besoins_materiel')->nullable();
             $table->enum('statut', ['Validé', 'En attente', 'Rejeté'])->default('En attente');
             $table->enum('type_pfe', ['Classique', 'Innovant', 'Stage']);
+            $table->string('email')->nullable(); // Ajoute la colonne email
+            $table->text('observation')->nullable(); // Ajout pour stocker les observations du responsable
             $table->timestamps();
         });
     }

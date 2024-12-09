@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PropositionController;
+use App\Http\Controllers\ImportController;
 
 Route::middleware(['auth', 'check.user.type:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () { 
@@ -121,9 +122,11 @@ Route::middleware(['auth', 'check.user.type:etudiant'])->prefix('student')->grou
     Route::get('/propose-pfe', function () {
         return Inertia::render('etudiant/propose-pfe');
     })->name('student.propose-pfe');
+    Route::get('/propose-pfe', [PropositionController::class, 'create'])->name('student.propose-pfe');
     Route::post('/propose-pfe', [PropositionController::class, 'store'])->name('student.propose-pfe.store');
-    Route::get('/propose-pfe/{id}', [PropositionController::class, 'edit'])->name('student.propose-pfe.edit');
     Route::put('/propose-pfe/{id}', [PropositionController::class, 'update'])->name('student.propose-pfe.update');
+    Route::post('/invitation/{id}/respond', [PropositionController::class, 'respondToInvitation'])->name('student.invitation.respond');
+    Route::post('/invitation/{id}/cancel', [PropositionController::class, 'cancelInvitation'])->name('student.invitation.cancel');
 });
 
 Route::middleware(['auth'])->get('/profile', function () {
@@ -135,9 +138,9 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->m
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit')->middleware('guest');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/welcome', function () {
-    return Inertia::render('Welcome'); // Rendre le composant Welcome
-})->name('welcome');
+Route::get('/index', function () {
+    return Inertia::render('Index'); // Rendre le composant Welcome
+})->name('Index');
 
 // Redirect root to login if not authenticated
 Route::get('/', function () {

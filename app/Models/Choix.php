@@ -17,7 +17,7 @@ class Choix extends Model
     // Relation : Un choix appartient à un utilisateur
     public function utilisateur()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Utilisateur::class, 'user_id');
     }
 
     // Relation : Un choix est lié à une proposition

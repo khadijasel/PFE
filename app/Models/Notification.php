@@ -16,6 +16,6 @@ class Notification extends Model
     // Relation : Une notification appartient à un utilisateur
     public function utilisateur()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(Utilisateur::class, 'user_id');
     }
 }

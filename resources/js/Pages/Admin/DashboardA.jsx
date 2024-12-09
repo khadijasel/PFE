@@ -4,6 +4,7 @@ import Layout from '../Shared/Layout';
 import CalendarComponent from '../Shared/Components/Calendar';
 import { FaUserGraduate, FaChalkboardTeacher, FaBuilding, FaClipboardCheck, FaWpforms, FaEnvelope } from 'react-icons/fa';
 import { Link } from '@inertiajs/react';
+import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 export default function AdminDashboard() {
     const stats = {
@@ -35,6 +36,34 @@ export default function AdminDashboard() {
             allDay: true,
         },
     ];
+
+    // Data for the charts
+    const userDistributionData = [
+        { name: 'Étudiants', value: 64 },
+        { name: 'Enseignants', value: 25 },
+        { name: 'Entreprises', value: 11 },
+    ];
+
+    const pfeTypesData = [
+        { name: 'Classique', value: 75 },
+        { name: 'Innovant', value: 15 },
+        { name: 'Stage', value: 10 },
+    ];
+
+    const pfeStatusData = [
+        { name: 'Validé', value: 77 },
+        { name: 'Refusé', value: 4 },
+        { name: 'En attente', value: 19 },
+    ];
+
+    const optionsComparisonData = [
+        { name: 'GL', students: 75, proposals: 40 },
+        { name: 'IA', students: 45, proposals: 22 },
+        { name: 'SIC', students: 40, proposals: 15 },
+        { name: 'RSD', students: 50, proposals: 25 },
+    ];
+
+    const COLORS = ['#4F46E5', '#F59E0B', '#10B981', '#EF4444'];
 
     return (
         <Layout>
@@ -115,7 +144,110 @@ export default function AdminDashboard() {
                         </div>
                     </div>
                 </div>
+
+                {/* New Section for Charts */}
+                <div className="mt-8">
+                    <h2 className="text-2xl font-semibold text-gray-900 mb-6">Graphiques</h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* User Distribution Chart */}
+                        <div className="bg-white shadow rounded-lg p-6">
+                            <h3 className="text-xl font-semibold mb-4">Répartition des utilisateurs par type</h3>
+                            <div className="h-[300px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={userDistributionData}
+                                            cx="50%"
+                                            cy="50%"
+                                            labelLine={false}
+                                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                            outerRadius={80}
+                                            fill="#8884d8"
+                                            dataKey="value"
+                                        >
+                                            {userDistributionData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+
+                        {/* PFE Types Chart */}
+                        <div className="bg-white shadow rounded-lg p-6">
+                            <h3 className="text-xl font-semibold mb-4">Type de PFE</h3>
+                            <div className="h-[300px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={pfeTypesData}
+                                            cx="50%"
+                                            cy="50%"
+                                            labelLine={false}
+                                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                            outerRadius={80}
+                                            fill="#8884d8"
+                                            dataKey="value"
+                                        >
+                                            {pfeTypesData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+
+                        {/* PFE Status Chart */}
+                        <div className="bg-white shadow rounded-lg p-6">
+                            <h3 className="text-xl font-semibold mb-4">État de PFE</h3>
+                            <div className="h-[300px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <PieChart>
+                                        <Pie
+                                            data={pfeStatusData}
+                                            cx="50%"
+                                            cy="50%"
+                                            labelLine={false}
+                                            label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                                            outerRadius={80}
+                                            fill="#8884d8"
+                                            dataKey="value"
+                                        >
+                                            {pfeStatusData.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                            ))}
+                                        </Pie>
+                                        <Tooltip />
+                                    </PieChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+
+                        {/* Options Comparison Chart */}
+                        <div className="bg-white shadow rounded-lg p-6">
+                            <h3 className="text-xl font-semibold mb-4">Nombre d'étudiants et de propositions de PFE par option</h3>
+                            <div className="h-[300px]">
+                                <ResponsiveContainer width="100%" height="100%">
+                                    <BarChart data={optionsComparisonData}>
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" />
+                                        <YAxis />
+                                        <Tooltip />
+                                        <Legend />
+                                        <Bar dataKey="students" name="Nombre Étudiants" fill="#4F46E5" />
+                                        <Bar dataKey="proposals" name="PFE proposés" fill="#F59E0B" />
+                                    </BarChart>
+                                </ResponsiveContainer>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </Layout>
     );
 }
+

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('enseignants', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('utilisateurs')->onDelete('cascade'); // FK vers users
+            $table->foreignId('user_id')->constrained('utilisateurs')->onDelete('cascade'); // FK vers utilisateurs
             $table->date('date_recrutement');
             $table->string('grade');
-            $table->string('type');
+            $table->enum('responsable_specialite', ['GL', 'IA', 'RSD', 'SIC'])->nullable(); // Responsable spécialité ou null
             $table->timestamps();
         });
     }
