@@ -23,7 +23,7 @@ class UtilisateurTableSeeder extends Seeder
             'type_utilisateur' => 'teacher',
             'nom' => 'seladji',
             'prenom' => 'khadija',
-            'email' => 'aliskazi@gmail.com',
+            'email' => 'khadijaseladji@gmail.com',
             'mot_de_passe' => Hash::make('password'),
         ]);
 
