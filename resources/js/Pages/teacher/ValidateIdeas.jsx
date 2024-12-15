@@ -1,160 +1,62 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Layout from '../Shared/Layout';
+import { usePage } from '@inertiajs/react';
+
 export default function ValidateIdeas() {
-    // Mock data for projects
-    const [projects, setProjects] = useState([
-        {
-            id: 1,
-            type: 'teacher',
-            proposerName: 'John Doe',
-            submissionDate: '2024-11-30',
-            description: 'A machine learning project focused on data analysis.',
-            projectType: 'Research',
-            domain: 'Artificial Intelligence',
-        },
-        {
-            id: 2,
-            type: 'student',
-            proposerName: 'Jane Smith',
-            submissionDate: '2024-11-28',
-            description: 'Developing a web app for real-time chat.',
-            projectType: 'Application Development',
-            domain: 'Web Technology',
-        },
-    ]);
+    const { propositions = [], error } = usePage().props;
 
-    // State for modal visibility and text input
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modificationText, setModificationText] = useState('');
-    const [currentProjectId, setCurrentProjectId] = useState(null);
-
-    // Handle actions
-    const handleAction = (id, action) => {
-        const actionMessages = {
-            validate: 'Projet validé avec succès!',
-            refuse: 'Projet refusé.',
-            modification: 'Demande de modification envoyée.',
-        };
-
-        // Perform action (for now, just log and update state)
-        console.log(`Action: ${action} on project ID: ${id}`);
-        alert(actionMessages[action]);
-
-        // Remove project from the list after an action
-        setProjects((prevProjects) => prevProjects.filter((project) => project.id !== id));
-    };
-
-    // Open modal to request modification
-    const openModal = (id) => {
-        setCurrentProjectId(id);
-        setIsModalOpen(true);
-    };
-
-    // Close modal
-    const closeModal = () => {
-        setIsModalOpen(false);
-        setModificationText('');
-    };
-
-    // Handle input change
-    const handleInputChange = (event) => {
-        setModificationText(event.target.value);
-    };
-
-    // Handle submit modification
-    const handleSubmitModification = () => {
-        console.log(`Modification request for project ${currentProjectId}: ${modificationText}`);
-        alert('Demande de modification envoyée!');
-        setIsModalOpen(false);
-        setModificationText('');
-    };
+    console.log('Page props:', usePage().props);
+    console.log('Propositions:', propositions);
+    console.log('Error:', error);
 
     return (
         <Layout>
-        <div className="p-6 bg-gray-100 min-h-screen">
-            <h1 className="text-2xl font-bold mb-6 text-gray-800">Validation des Propositions de Projets</h1>
-            {projects.length === 0 ? (
-                <p className="text-gray-600">Aucune proposition de projet à valider.</p>
-            ) : (
-                <div className="space-y-4">
-                    {projects.map((project) => (
-                        <div
-                            key={project.id}
-                            className="bg-white shadow rounded-lg p-4 border border-gray-200"
-                        >
-                            <p>
-                                <span className="font-semibold">Type:</span> {project.type === 'teacher' ? 'Proposé par un enseignant' : 'Proposé par un étudiant'}
-                            </p>
-                            <p>
-                                <span className="font-semibold">Proposé par:</span> {project.proposerName}
-                            </p>
-                            <p>
-                                <span className="font-semibold">Date de soumission:</span> {project.submissionDate}
-                            </p>
-                            <p>
-                                <span className="font-semibold">Description:</span> {project.description}
-                            </p>
-                            <p>
-                                <span className="font-semibold">Type de projet:</span> {project.projectType}
-                            </p>
-                            <p>
-                                <span className="font-semibold">Domaine:</span> {project.domain}
-                            </p>
-                            <div className="mt-4 flex space-x-4">
-                                <button
-                                    className="bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600"
-                                    onClick={() => handleAction(project.id, 'validate')}
-                                >
-                                    Valider
-                                </button>
-                                <button
-                                    className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
-                                    onClick={() => handleAction(project.id, 'refuse')}
-                                >
-                                    Refuser
-                                </button>
-                                <button
-                                    className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-                                    onClick={() => openModal(project.id)}
-                                >
-                                    Demander Modification
-                                </button>
-                            </div>
-                        </div>
-                    ))}
+            <div className="p-6 bg-gray-100 min-h-screen">
+                <h1 className="text-2xl font-bold mb-6 text-gray-800">Validation des Propositions de Projets</h1>
+                
+                {/* Debugging information */}
+                <div className="mb-4 p-4 bg-yellow-100 border border-yellow-400 rounded">
+                    <h2 className="font-bold">Debugging Info:</h2>
+                    <p>Number of propositions: {propositions.length}</p>
+                    <p>Type of propositions: {typeof propositions}</p>
+                    <p>Error: {error || 'No error'}</p>
                 </div>
-            )}
 
-            {/* Modal for modification request */}
-            {isModalOpen && (
-                <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full">
-                        <h2 className="text-xl font-semibold mb-4">Demande de Modification</h2>
-                        <textarea
-                            className="w-full p-2 border border-gray-300 rounded-lg"
-                            rows="4"
-                            placeholder="Entrez votre demande de modification ici..."
-                            value={modificationText}
-                            onChange={handleInputChange}
-                        ></textarea>
-                        <div className="mt-4 flex space-x-4">
-                            <button
-                                className="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
-                                onClick={closeModal}
-                            >
-                                Annuler
-                            </button>
-                            <button
-                                className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-                                onClick={handleSubmitModification}
-                            >
-                                Envoyer
-                            </button>
-                        </div>
+                {error && (
+                    <div className="mb-4 p-4 bg-red-100 border border-red-400 rounded text-red-700">
+                        {error}
                     </div>
-                </div>
-            )}
-        </div>
+                )}
+
+                {propositions.length === 0 ? (
+                    <p className="text-gray-600">Aucune proposition de projet à valider.</p>
+                ) : (
+                    <div className="space-y-4">
+                        {propositions.map((proposition) => (
+                            <div
+                                key={proposition.id}
+                                className="bg-white shadow rounded-lg p-4 border border-gray-200"
+                            >
+                                <p><span className="font-semibold">Titre:</span> {proposition.titre}</p>
+                                <p><span className="font-semibold">Résumé:</span> {proposition.resume}</p>
+                                <p><span className="font-semibold">Technologies:</span> {proposition.technologies}</p>
+                                <p><span className="font-semibold">Besoins matériels:</span> {proposition.besoins_materiel}</p>
+                                <p><span className="font-semibold">Statut:</span> {proposition.statut}</p>
+                                <p><span className="font-semibold">Type de PFE:</span> {proposition.type_pfe}</p>
+                                <p><span className="font-semibold">Email:</span> {proposition.email}</p>
+                                {proposition.observation && (
+                                    <p><span className="font-semibold">Observation:</span> {proposition.observation}</p>
+                                )}
+                                {proposition.user && (
+                                    <p><span className="font-semibold">Proposé par:</span> {proposition.user.nom} {proposition.user.prenom}</p>
+                                )}
+                                <p><span className="font-semibold">Date de soumission:</span> {new Date(proposition.created_at).toLocaleDateString()}</p>
+                            </div>
+                        ))}
+                    </div>
+                )}
+            </div>
         </Layout>
     );
 }
+

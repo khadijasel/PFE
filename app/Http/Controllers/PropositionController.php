@@ -124,6 +124,8 @@ class PropositionController extends Controller
 
             return redirect()->route('student.propose-pfe')->with('success', 'Invitation acceptée avec succès');
         } else {
+            $proposition = $invitation->proposition;
+
             Notification::create([
                 'user_id' => $invitation->sender_id,
                 'type_notification' => 'invitation_rejected',
@@ -131,6 +133,7 @@ class PropositionController extends Controller
             ]);
 
             $invitation->delete();
+            $proposition->delete();
 
             return redirect()->route('student.propose-pfe')->with('success', 'Invitation refusée avec succès');
         }

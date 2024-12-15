@@ -18,6 +18,38 @@ class UtilisateurTableSeeder extends Seeder
             'email' => 'aliskazi@gmail.com',
             'mot_de_passe' => Hash::make('password'),
         ]);
+
+        Utilisateur::create([
+            'type_utilisateur' => 'teacher',
+            'nom' => 'seladji',
+            'prenom' => 'khadija',
+            'email' => 'aliskazi@gmail.com',
+            'mot_de_passe' => Hash::make('password'),
+        ]);
+
+        Utilisateur::create([
+            'type_utilisateur' => 'superiorTeacher',
+            'nom' => 'romaissa',
+            'prenom' => 'hamadouche',
+            'email' => 'romaissa@gmail.com',
+            'mot_de_passe' => Hash::make('password'),
+        ]);
+
+        Utilisateur::create([
+            'type_utilisateur' => 'company',
+            'nom' => 'company',
+            'prenom' => 'name',
+            'email' => 'company@gmail.com',
+            'mot_de_passe' => Hash::make('password'),
+        ]);
+
+        Utilisateur::create([
+            'type_utilisateur' => 'admin',
+            'nom' => 'admin',
+            'prenom' => 'principal',
+            'email' => 'adminprincipal@gmail.com',
+            'mot_de_passe' => Hash::make('password'),
+        ]);
        
     }
 }

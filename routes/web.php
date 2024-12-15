@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PropositionController;
-use App\Http\Controllers\ImportController;
+use App\Http\Controllers\ValidateIdeasController;
 
 Route::middleware(['auth', 'check.user.type:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', function () { 
@@ -106,6 +106,7 @@ Route::middleware(['auth', 'check.user.type:teacher,superiorTeacher'])->prefix('
     Route::get('/ValidateIdeas', function () {
         return Inertia::render('teacher/ValidateIdeas');
     })->name('teacher.dashboard.ValidateIdeas');
+    Route::get('/ValidateIdeas', [ValidateIdeasController::class, 'index'])->name('teacher.dashboard.ValidateIdeas');
 });
 
 Route::middleware(['auth', 'check.user.type:etudiant'])->prefix('student')->group(function () {
@@ -122,6 +123,7 @@ Route::middleware(['auth', 'check.user.type:etudiant'])->prefix('student')->grou
     Route::get('/propose-pfe', function () {
         return Inertia::render('etudiant/propose-pfe');
     })->name('student.propose-pfe');
+
     Route::get('/propose-pfe', [PropositionController::class, 'create'])->name('student.propose-pfe');
     Route::post('/propose-pfe', [PropositionController::class, 'store'])->name('student.propose-pfe.store');
     Route::put('/propose-pfe/{id}', [PropositionController::class, 'update'])->name('student.propose-pfe.update');
@@ -146,4 +148,3 @@ Route::get('/index', function () {
 Route::get('/', function () {
     return Auth::check() ? redirect()->route('profile') : redirect()->route('login');
 });
-

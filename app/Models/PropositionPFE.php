@@ -16,7 +16,8 @@ class PropositionPFE extends Model
         'besoins_materiel',
         'statut',
         'type_pfe',
-        'email'
+        'email',
+        'observation'
     ];
 
     public function user()
