@@ -1,22 +1,24 @@
-import React, { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
+import React, { useState, useEffect } from 'react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import Layout from '../Shared/Layout';
 import { FaGraduationCap, FaClipboardList, FaCog, FaCheckCircle, FaChevronRight, FaPlusCircle } from 'react-icons/fa';
 import CalendarComponent from '../Shared/Components/Calendar';
 
 export default function StudentDashboard() {
-    const student = {
-        name: "Marwa",
-        id: "ETU001",
-        option: "Génie Logiciel"
-    };
-
+    const { auth } = usePage().props;
+    const [student, setStudent] = useState({ prenom: "" });
     const [todos, setTodos] = useState([
         { id: 1, task: "Soumis le projet", completed: true },
         { id: 2, task: "Élaborer un plan de recherche", completed: false },
         { id: 3, task: "Revoir les annales", completed: false }
     ]);
     const [newTodo, setNewTodo] = useState('');
+
+    useEffect(() => {
+        if (auth && auth.user) {
+            setStudent({ prenom: auth.user.name.split(' ')[0] });
+        }
+    }, [auth]);
 
     const toggleTodo = (id) => {
         setTodos(todos.map(todo => 
@@ -47,7 +49,7 @@ export default function StudentDashboard() {
                     <div className="flex items-center gap-4">
                         <div className="flex-1">
                             <h2 className="text-2xl font-semibold text-gray-900">
-                                Welcome back, {student.name}!
+                                Welcome back, {student.prenom}!
                             </h2>
                             <p className="text-gray-600">
                                 Explore the features to manage your information and access useful resources!
@@ -65,14 +67,14 @@ export default function StudentDashboard() {
                     <div className="lg:col-span-2">
                         <div className="grid grid-cols-3 gap-4 mb-6">
                             {/* Status of Steps */}
-                            <Link href="/student/steps" className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-50 transition-colors">
+                            <Link href="/student/propose-pfe" className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-50 transition-colors">
                                 <FaClipboardList className="text-4xl text-blue-500 mb-3" />
-                                <h3 className="font-semibold text-sm text-center">Status of steps</h3>
+                                <h3 className="font-semibold text-sm text-center">Proposer un pfe</h3>
                                 <FaChevronRight className="mt-2 text-gray-400" />
                             </Link>
 
                             {/* My Project */}
-                            <Link href="/student/project" className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-50 transition-colors">
+                            <Link href="/student/my-pfe" className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center justify-center hover:bg-gray-50 transition-colors">
                                 <FaCog className="text-4xl text-gray-600 mb-3" />
                                 <h3 className="font-semibold text-sm text-center">My project</h3>
                                 <FaChevronRight className="mt-2 text-gray-400" />
@@ -208,3 +210,4 @@ export default function StudentDashboard() {
         </Layout>
     );
 }
+
