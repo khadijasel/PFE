@@ -7,7 +7,6 @@ export default function ProposePFE() {
         title: '',
         description: '',
         requiredSkills: '',
-        maxStudents: 1
     });
 
     const handleChange = (e) => {

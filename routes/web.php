@@ -107,6 +107,10 @@ Route::middleware(['auth', 'check.user.type:teacher,superiorTeacher'])->prefix('
     Route::get('/ValidateIdeas', function () {
         return Inertia::render('teacher/ValidateIdeas');
     })->name('teacher.dashboard.ValidateIdeas');
+
+    Route::get('/propose-pfe', [PropositionController::class, 'createTeacher'])->name('teacher.propose-pfe');
+    Route::post('/propose-pfe', [PropositionController::class, 'storeTeacher'])->name('teacher.propose-pfe.store');
+     Route::get('/PFYIdeas', [PropositionController::class, 'getPFYIdeas'])->name('teacher.dashboard.PFYIdeas');
     Route::get('/ValidateIdeas', [ValidateIdeasController::class, 'index'])->name('teacher.dashboard.ValidateIdeas');
 });
 

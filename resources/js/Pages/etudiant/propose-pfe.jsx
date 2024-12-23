@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, usePage } from '@inertiajs/react';
 import Layout from '../Shared/Layout';
-import { FaLightbulb, FaCode, FaTools, FaGraduationCap, FaEnvelope, FaCheck, FaUserPlus, FaTimesCircle, FaTimes } from 'react-icons/fa';
+import { FaLightbulb, FaCode, FaTools, FaGraduationCap, FaEnvelope, FaCheck, FaUserPlus, FaTimesCircle, FaTimes, FaUserTie } from 'react-icons/fa';
+import { Autocomplete, TextField } from '@mui/material';
 
 const ProposePFE = () => {
     const { data, setData, post, put, processing, errors, reset } = useForm({
@@ -12,14 +13,27 @@ const ProposePFE = () => {
         besoins_materiel: '',
         type_pfe: 'Classique',
         email: '',
+        encadrant_souhaite: null,
     });
 
-    const { proposition, success, pendingInvitation, sentInvitations } = usePage().props;
+    const { proposition, success, pendingInvitation, sentInvitations, teachers } = usePage().props;
     const [showInvitationDetails, setShowInvitationDetails] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const [selectedTeacher, setSelectedTeacher] = useState(null);
 
     useEffect(() => {
         if (proposition && !isEditing) {
+            // Parse the encadrants array if it's a string
+            let encadrantId = null;
+            if (proposition.encadrants) {
+                try {
+                    const encadrantsArray = JSON.parse(proposition.encadrants);
+                    encadrantId = encadrantsArray[0]; // Get the first encadrant ID
+                } catch (e) {
+                    console.error('Error parsing encadrants:', e);
+                }
+            }
+
             setData({
                 id: proposition.id,
                 titre: proposition.titre || '',
@@ -28,10 +42,18 @@ const ProposePFE = () => {
                 besoins_materiel: proposition.besoins_materiel || '',
                 type_pfe: proposition.type_pfe || 'Classique',
                 email: proposition.email || '',
+                encadrant_souhaite: encadrantId,
             });
+
+            // Find and set the selected teacher
+            if (encadrantId && teachers) {
+                const foundTeacher = teachers.find(t => t.id === encadrantId);
+                setSelectedTeacher(foundTeacher || null);
+            }
+
             setIsEditing(true);
         }
-    }, [proposition, setData, isEditing]);
+    }, [proposition, setData, isEditing, teachers]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -76,7 +98,7 @@ const ProposePFE = () => {
         }
     };
 
-    const inputClass = "mt-1 block w-full rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-base text-gray-700";
+    const inputClass = "mt-1 block w-full rounded border-2 border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 text-base text-gray-700 p-3";
     const labelClass = "block font-medium text-base text-gray-700 mb-2";
 
     return (
@@ -196,94 +218,142 @@ const ProposePFE = () => {
                                     />
                                     {errors.resume && <div className="text-red-500 mt-1">{errors.resume}</div>}
                                 </div>
-    <div>
-    <label htmlFor="technologies" className={labelClass}>
-        <FaCode className="inline-block mr-2 text-indigo-500" />
-        Technologies
-    </label>
-    <input
-        id="technologies"
-        type="text"
-        name="technologies"
-        value={data.technologies}
-        onChange={handleChange}
-        className={inputClass}
-        required
-    />
-    {errors.technologies && <div className="text-red-500 mt-1">{errors.technologies}</div>}
-</div>
 
-<div>
-    <label htmlFor="type_pfe" className={labelClass}>
-        <FaGraduationCap className="inline-block mr-2 text-indigo-500" />
-        Type de PFE
-    </label>
-    <select
-        id="type_pfe"
-        name="type_pfe"
-        value={data.type_pfe}
-        onChange={handleChange}
-        className={inputClass}
-        required
-    >
-        <option value="Classique">Classique</option>
-        <option value="Innovant">Innovant</option>
-        <option value="Recherche">Recherche</option>
-    </select>
-</div>
+                                <div>
+                                    <label htmlFor="technologies" className={labelClass}>
+                                        <FaCode className="inline-block mr-2 text-indigo-500" />
+                                        Technologies
+                                    </label>
+                                    <input
+                                        id="technologies"
+                                        type="text"
+                                        name="technologies"
+                                        value={data.technologies}
+                                        onChange={handleChange}
+                                        className={inputClass}
+                                        required
+                                    />
+                                    {errors.technologies && <div className="text-red-500 mt-1">{errors.technologies}</div>}
+                                </div>
 
-<div>
-    <label htmlFor="besoins_materiel" className={labelClass}>
-        <FaTools className="inline-block mr-2 text-indigo-500" />
-        Besoins Matériel
-    </label>
-    <textarea
-        id="besoins_materiel"
-        name="besoins_materiel"
-        value={data.besoins_materiel}
-        onChange={handleChange}
-        rows="3"
-        className={inputClass}
-    />
-    {errors.besoins_materiel && <div className="text-red-500 mt-1">{errors.besoins_materiel}</div>}
-</div>
+                                <div>
+                                    <label htmlFor="type_pfe" className={labelClass}>
+                                        <FaGraduationCap className="inline-block mr-2 text-indigo-500" />
+                                        Type de PFE
+                                    </label>
+                                    <select
+                                        id="type_pfe"
+                                        name="type_pfe"
+                                        value={data.type_pfe}
+                                        onChange={handleChange}
+                                        className={inputClass}
+                                        required
+                                    >
+                                        <option value="Classique">Classique</option>
+                                        <option value="Innovant">Innovant</option>
+                                        <option value="Recherche">Recherche</option>
+                                    </select>
+                                </div>
 
-{!proposition && (
-    <div>
-        <label htmlFor="email" className={labelClass}>
-            <FaEnvelope className="inline-block mr-2 text-indigo-500" />
-            Email du binôme (optionnel)
-        </label>
-        <input
-            id="email"
-            type="email"
-            name="email"
-            value={data.email}
-            onChange={handleChange}
-            className={inputClass}
-        />
-        {errors.email && <div className="text-red-500 mt-1">{errors.email}</div>}
-    </div>
-)}
+                                <div>
+                                    <label htmlFor="besoins_materiel" className={labelClass}>
+                                        <FaTools className="inline-block mr-2 text-indigo-500" />
+                                        Besoins Matériel
+                                    </label>
+                                    <textarea
+                                        id="besoins_materiel"
+                                        name="besoins_materiel"
+                                        value={data.besoins_materiel}
+                                        onChange={handleChange}
+                                        rows="3"
+                                        className={inputClass}
+                                    />
+                                    {errors.besoins_materiel && <div className="text-red-500 mt-1">{errors.besoins_materiel}</div>}
+                                </div>
 
-<div className="pt-5">
-    <div className="flex justify-end">
-        <button
-            type="submit"
-            disabled={processing}
-            className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-            {processing ? 'Traitement...' : (isEditing ? 'Mettre à jour' : 'Soumettre')}
-        </button>
-    </div>
-</div>
-</form>
-</div>
-</div>
-</div>
-</div>
-</Layout>
-);
+                                {!isEditing && (
+                                    <div>
+                                        <label htmlFor="email" className={labelClass}>
+                                            <FaEnvelope className="inline-block mr-2 text-indigo-500" />
+                                            Email du binôme (optionnel)
+                                        </label>
+                                        <input
+                                            id="email"
+                                            type="email"
+                                            name="email"
+                                            value={data.email}
+                                            onChange={handleChange}
+                                            className={inputClass}
+                                        />
+                                        {errors.email && <div className="text-red-500 mt-1">{errors.email}</div>}
+                                    </div>
+                                )}
+
+                                <div>
+                                    <label htmlFor="encadrant_souhaite" className={labelClass}>
+                                        <FaUserTie className="inline-block mr-2 text-indigo-500" />
+                                        Encadrant souhaité (optionnel)
+                                    </label>
+                                    <Autocomplete
+                                        id="encadrant_souhaite"
+                                        options={teachers}
+                                        getOptionLabel={(option) => `${option.name} - ${option.grade}${option.isResponsable ? ` (Responsable ${option.specialite})` : ''}`}
+                                        value={selectedTeacher}
+                                        onChange={(event, newValue) => {
+                                            setSelectedTeacher(newValue);
+                                            setData('encadrant_souhaite', newValue ? newValue.id : null);
+                                        }}
+                                        isOptionEqualToValue={(option, value) => option.id === value?.id}
+                                        renderInput={(params) => (
+                                            <TextField 
+                                                {...params} 
+                                                variant="outlined" 
+                                                sx={{
+                                                    '& .MuiOutlinedInput-root': {
+                                                        '& fieldset': {
+                                                            borderWidth: '2px',
+                                                            borderColor: '#D1D5DB',
+                                                        },
+                                                        '&:hover fieldset': {
+                                                            borderColor: '#D1D5DB',
+                                                        },
+                                                        '&.Mui-focused fieldset': {
+                                                            borderColor: '#818CF8',
+                                                        },
+                                                        padding: '8px',
+                                                    },
+                                                }}
+                                            />
+                                        )}
+                                        className={inputClass}
+                                    />
+                                    {errors.encadrant_souhaite && <div className="text-red-500 mt-1">{errors.encadrant_souhaite}</div>}
+                                    {selectedTeacher && (
+                                        <div className="mt-2 text-sm text-gray-600">
+                                            Encadrant choisi : {selectedTeacher.name} - {selectedTeacher.grade}
+                                            {selectedTeacher.isResponsable && ` (Responsable ${selectedTeacher.specialite})`}
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="pt-5">
+                                    <div className="flex justify-end">
+                                        <button
+                                            type="submit"
+                                            disabled={processing}
+                                            className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        >
+                                            {processing ? 'Traitement...' : (isEditing ? 'Mettre à jour' : 'Soumettre')}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </Layout>
+    );
 };
 
 export default ProposePFE;

@@ -22,6 +22,8 @@ return new class extends Migration
             $table->enum('type_pfe', ['Classique', 'Innovant', 'Stage']);
             $table->string('email')->nullable(); // Ajoute la colonne email
             $table->text('observation')->nullable(); // Ajout pour stocker les observations du responsable
+            $table->json('encadrants')->nullable(); // Liste des IDs des encadrants, peut être null
+            $table->json('coencadrants')->nullable(); // Liste des IDs des étudiants, peut être null
             $table->timestamps();
         });
     }

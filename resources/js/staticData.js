@@ -71,4 +71,5 @@ export const adminData = {
         { id: 5, description: "Ouverture des inscriptions pour les PFE de l'année prochaine", date: "2023-06-26" }
     ]
 };
-
+//2. Champ Autocomplete avec balises
+//Si la liste des encadrants est longue, vous pouvez utiliser un champ d'autocomplétion qui permet d'ajouter des noms ou des ID sous forme de tags.

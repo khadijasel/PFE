@@ -29,10 +29,25 @@ class PropositionController extends Controller
             ->with(['receiver', 'proposition'])
             ->get();
 
+        $teachers = Utilisateur::whereIn('type_utilisateur', ['teacher', 'superiorTeacher'])
+            ->join('enseignants', 'utilisateurs.id', '=', 'enseignants.user_id')
+            ->select('utilisateurs.id', 'utilisateurs.nom', 'utilisateurs.prenom', 'utilisateurs.type_utilisateur', 'enseignants.grade', 'enseignants.responsable_specialite')
+            ->get()
+            ->map(function ($teacher) {
+                return [
+                    'id' => $teacher->id,
+                    'name' => $teacher->nom . ' ' . $teacher->prenom,
+                    'grade' => $teacher->grade,
+                    'isResponsable' => $teacher->type_utilisateur === 'superiorTeacher',
+                    'specialite' => $teacher->responsable_specialite
+                ];
+            });
+
         return Inertia::render('etudiant/propose-pfe', [
             'proposition' => $proposition,
             'pendingInvitation' => $pendingInvitation,
-            'sentInvitations' => $sentInvitations
+            'sentInvitations' => $sentInvitations,
+            'teachers' => $teachers
         ]);
     }
 
@@ -44,7 +59,8 @@ class PropositionController extends Controller
             'technologies' => 'required|string',
             'besoins_materiel' => 'nullable|string',
             'type_pfe' => 'required|in:Classique,Innovant,recherche',
-            'email' => 'nullable|email|exists:utilisateurs,email'
+            'email' => 'nullable|email|exists:utilisateurs,email',
+            'encadrant_souhaite' => 'nullable|exists:utilisateurs,id'
         ]);
 
         $user = Auth::user();
@@ -57,7 +73,8 @@ class PropositionController extends Controller
                 'besoins_materiel' => $validated['besoins_materiel'],
                 'statut' => 'En attente',
                 'type_pfe' => $validated['type_pfe'],
-                'email' => $validated['email'] // This will be null if no email is provided
+                'email' => $validated['email'],
+                'encadrants' => $validated['encadrant_souhaite'] ? json_encode([$validated['encadrant_souhaite']]) : null,
             ]
         );
 
@@ -85,25 +102,37 @@ class PropositionController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $proposition = PropositionPFE::findOrFail($id);
+{
+    $proposition = PropositionPFE::findOrFail($id);
 
-        if ($proposition->user_id !== Auth::id() && $proposition->email !== Auth::user()->email) {
-            abort(403, 'Unauthorized action.');
-        }
-
-        $validated = $request->validate([
-            'titre' => 'required|string|max:255',
-            'resume' => 'required|string',
-            'technologies' => 'required|string',
-            'besoins_materiel' => 'nullable|string',
-            'type_pfe' => 'required|in:Classique,Innovant,recherche',
-        ]);
-
-        $proposition->update($validated);
-
-        return redirect()->route('student.propose-pfe')->with('success', 'Proposition de PFE mise à jour avec succès');
+    // Vérification des permissions
+    if ($proposition->user_id !== Auth::id() && $proposition->email !== Auth::user()->email) {
+        abort(403, 'Unauthorized action.');
     }
+
+    // Validation des données
+    $validated = $request->validate([
+        'titre' => 'required|string|max:255',
+        'resume' => 'required|string',
+        'technologies' => 'required|string',
+        'besoins_materiel' => 'nullable|string',
+        'type_pfe' => 'required|in:Classique,Innovant,recherche',
+        'encadrant_souhaite' => 'nullable|exists:utilisateurs,id', // Validation de l'encadrant souhaité
+    ]);
+
+    // Mise à jour des données, y compris la transformation d'encadrant_souhaite
+    $proposition->update([
+        'titre' => $validated['titre'],
+        'resume' => $validated['resume'],
+        'technologies' => $validated['technologies'],
+        'besoins_materiel' => $validated['besoins_materiel'],
+        'type_pfe' => $validated['type_pfe'],
+        'encadrants' => $validated['encadrant_souhaite'] ? json_encode([$validated['encadrant_souhaite']]) : $proposition->encadrants,
+    ]);
+
+    return redirect()->route('student.propose-pfe')->with('success', 'Proposition de PFE mise à jour avec succès');
+}
+
 
     public function respondToInvitation(Request $request, $id)
     {
@@ -156,6 +185,56 @@ class PropositionController extends Controller
         ]);
 
         return redirect()->route('student.propose-pfe')->with('success', 'Invitation annulée avec succès');
+    }
+
+    public function createTeacher()
+    {
+        $user = Auth::user();
+        $propositions = PropositionPFE::where('user_id', $user->id)->get();
+
+        return Inertia::render('teacher/propose-pfe', [
+            'propositions' => $propositions
+        ]);
+    }
+
+    public function storeTeacher(Request $request)
+    {
+        $validated = $request->validate([
+            'titre' => 'required|string|max:255',
+            'resume' => 'required|string',
+            'technologies' => 'required|string',
+            'besoins_materiel' => 'nullable|string',
+            'type_pfe' => 'required|in:Classique,Innovant,Recherche',
+            'option' => 'required|in:GL,IA,RSD,SIC',
+            'coencadrant' => 'nullable|string'
+        ]);
+
+        $user = Auth::user();
+        $proposition = new PropositionPFE([
+            'user_id' => $user->id,
+            'titre' => $validated['titre'],
+            'resume' => $validated['resume'],
+            'technologies' => $validated['technologies'],
+            'besoins_materiel' => $validated['besoins_materiel'],
+            'statut' => 'En attente', 
+            'type_pfe' => $validated['type_pfe'],
+            'encadrants' => json_encode([$user->id]),
+            'coencadrants' => $validated['coencadrant'] ? json_encode([$validated['coencadrant']]) : null
+        ]);
+
+        $proposition->save();
+
+        return redirect()->route('teacher.propose-pfe')->with('success', 'Proposition de PFE soumise avec succès');
+    }
+
+    public function getPFYIdeas()
+    {
+        $user = Auth::user();
+        $themes = PropositionPFE::where('user_id', $user->id)->get();
+
+        return Inertia::render('teacher/PFYIdeas', [
+            'themes' => $themes
+        ]);
     }
 }
 
